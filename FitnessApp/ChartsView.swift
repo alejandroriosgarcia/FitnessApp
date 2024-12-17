@@ -28,7 +28,8 @@ enum ChartOptions: String, CaseIterable {
 
 struct ChartsView: View {
     @EnvironmentObject var manager:HealthManager
-    @State var selectedChart: ChartOptions = .oneMonth
+    @State var selectedChart: ChartOptions = .oneWeek
+    @StateObject var viewModel = ChartsViewModel()
     var body: some View {
         VStack() {
             Text("Steps")
@@ -39,33 +40,178 @@ struct ChartsView: View {
             ZStack {
                 switch selectedChart {
                 case .oneWeek:
-                    Chart {
-                        ForEach(manager.oneWeekChartData) { daily in
-                            BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                    VStack {
+                        HStack {
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Average")
+                                    .font(.title2)
+                                Text("\(viewModel.oneWeekAverage)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Total")
+                                    .font(.title2)
+                                Text("\(viewModel.oneWeekTotal)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                        }
+                        
+                        
+                        Chart {
+                            ForEach(manager.oneWeekChartData) { daily in
+                                BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                            }
                         }
                     }
                 case .oneMonth:
-                    Chart {
-                        ForEach(manager.oneMonthChartData) { daily in
-                            BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                    VStack {
+                        HStack {
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Average")
+                                    .font(.title2)
+                                Text("\(viewModel.oneMonthAverage)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Total")
+                                    .font(.title2)
+                                Text("\(viewModel.oneMonthTotal)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                        }
+                        
+                        Chart {
+                            ForEach(manager.oneMonthChartData) { daily in
+                                BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                            }
                         }
                     }
                 case .threeMonth:
-                    Chart {
-                        ForEach(manager.threeMonthsChartData) { daily in
-                            BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                    VStack {
+                        HStack {
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Average")
+                                    .font(.title2)
+                                Text("\(viewModel.threeMonthsAverage)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Total")
+                                    .font(.title2)
+                                Text("\(viewModel.threeMonthsTotal)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                        }
+                        
+                        Chart {
+                            ForEach(manager.threeMonthsChartData) { daily in
+                                BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                            }
                         }
                     }
                 case .oneYear:
-                    Chart {
-                        ForEach(manager.oneMonthChartData) { daily in
-                            BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                    VStack {
+                        HStack {
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Average")
+                                    .font(.title2)
+                                Text("\(viewModel.oneYearAverage)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                            
+                            VStack(spacing: 16) {
+                                Text("Total")
+                                    .font(.title2)
+                                Text("\(viewModel.oneYearTotal)")
+                                    .font(.title3)
+                            }
+                            .frame(width: 90)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.gray.opacity(0.07))
+                            .cornerRadius(10)
+                            
+                            
+                            Spacer()
+                        }
+                        
+                        Chart {
+                            ForEach(manager.oneMonthChartData) { daily in
+                                BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                            }
                         }
                     }
                 }
             }
             .foregroundColor(.blue)
-            .frame(height: 350)
+            .frame(height: 450)
             .padding(.horizontal)
             
             HStack {

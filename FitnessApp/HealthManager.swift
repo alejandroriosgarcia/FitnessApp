@@ -60,6 +60,8 @@ class HealthManager: ObservableObject {
     
     @Published var threeMonthsChartData = [DailyStepModel]()
     
+    @Published var todayCalories: Double = 0.0
+    
     init() {
         let steps = HKQuantityType(.stepCount)
         let calories = HKQuantityType(.activeEnergyBurned)
@@ -137,6 +139,7 @@ class HealthManager: ObservableObject {
             
             DispatchQueue.main.async {
                 self.activities["todayCalories"] = activity
+                self.todayCalories = caloriesBurned
             }
             
             print(caloriesBurned.formattedString())

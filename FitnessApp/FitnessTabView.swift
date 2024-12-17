@@ -27,11 +27,6 @@ struct FitnessTabView: View {
                 }
                 .environmentObject(manager)
             
-            ContentView()
-                .tag("Content")
-                .tabItem {
-                    Image(systemName: "person")
-                }
         }
     }
 }
