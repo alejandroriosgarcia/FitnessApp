@@ -8,17 +8,21 @@
 import SwiftUI
 import Charts
 
-struct DailyStepView: Identifiable {
+struct DailyStepModel: Identifiable {
     let id = UUID()
     let date: Date
-    let stepCount: Double
+    let stepCount: Int
 }
 
+//struct MonthlyStepModel: Identifiable {
+//    let id = UUID()
+//    let date: Date
+//    let count: Int
+//}
 enum ChartOptions: String, CaseIterable {
     case oneWeek = "1W"
     case oneMonth = "1M"
     case threeMonth = "3M"
-    case yearToDate = "YTD"
     case oneYear = "1Y"
 }
 
@@ -27,7 +31,7 @@ struct ChartsView: View {
     @State var selectedChart: ChartOptions = .oneMonth
     var body: some View {
         VStack() {
-            Text("Steps This Month")
+            Text("Steps")
                 .font(.largeTitle)
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,9 +51,11 @@ struct ChartsView: View {
                         }
                     }
                 case .threeMonth:
-                    EmptyView()
-                case .yearToDate:
-                    EmptyView()
+                    Chart {
+                        ForEach(manager.threeMonthsChartData) { daily in
+                            BarMark(x: .value(daily.date.formatted(), daily.date, unit: .day), y: .value("Steps", daily.stepCount))
+                        }
+                    }
                 case .oneYear:
                     Chart {
                         ForEach(manager.oneMonthChartData) { daily in

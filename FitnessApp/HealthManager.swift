@@ -25,6 +25,17 @@ extension Date {
         let oneMonth = calendar.date(byAdding: .month, value: -1, to: Date())
         return calendar.startOfDay(for: oneMonth!)
     }
+    
+    static var oneWeekAgo: Date {
+        let calendar = Calendar.current
+        let oneWeek = calendar.date(byAdding: .day, value: -7, to: Date())
+        return calendar.startOfDay(for: oneWeek!)
+    }
+    static var threeMonthsAgo: Date {
+        let calendar = Calendar.current
+        let threeMonths = calendar.date(byAdding: .month, value: -3, to: Date())
+        return calendar.startOfDay(for: threeMonths!)
+    }
 }
 
 // converting double to string with correct decimals
@@ -43,7 +54,11 @@ class HealthManager: ObservableObject {
     
     @Published var activities: [String: Activity] = [:]
     
-    @Published var oneMonthChartData = [DailyStepView]()
+    @Published var oneMonthChartData = [DailyStepModel]()
+    
+    @Published var oneWeekChartData = [DailyStepModel]()
+    
+    @Published var threeMonthsChartData = [DailyStepModel]()
     
     init() {
         let steps = HKQuantityType(.stepCount)
@@ -60,13 +75,15 @@ class HealthManager: ObservableObject {
                 fetchWeekRunningStats()
                 fetchWeekLiftingStats()
                 fetchPastMonthStepData()
+                fetchPastWeekStepData()
+                fetchPastThreeMonthsStepData()
             } catch {
                 print("Error fetching health data")
             }
         }
     }
     
-    func fetchDailySteps(startDate:Date, completion: @escaping ([DailyStepView]) -> Void) {
+    func fetchDailySteps(startDate:Date, completion: @escaping ([DailyStepModel]) -> Void) {
         let steps = HKQuantityType(.stepCount)
         let interval = DateComponents(day: 1)
         let query = HKStatisticsCollectionQuery(quantityType: steps, quantitySamplePredicate: nil, anchorDate: startDate, intervalComponents: interval)
@@ -77,10 +94,10 @@ class HealthManager: ObservableObject {
                 return
             }
             
-            var dailySteps = [DailyStepView]()
+            var dailySteps = [DailyStepModel]()
             
             result.enumerateStatistics(from: startDate, to: Date()) { statistics, stop in
-                dailySteps.append(DailyStepView(date: statistics.startDate, stepCount: statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.00))
+                dailySteps.append(DailyStepModel(date: statistics.startDate, stepCount: Int(statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.00)))
             }
             completion(dailySteps)
         }
@@ -187,15 +204,25 @@ extension HealthManager {
             DispatchQueue.main.async {
                 self.oneMonthChartData = dailySteps
             }
-            
         }
     }
+    
     func fetchPastWeekStepData() {
         fetchDailySteps(startDate: .oneWeekAgo) { dailySteps in
             DispatchQueue.main.async {
-                self.oneMonthChartData = dailySteps
+                self.oneWeekChartData = dailySteps
             }
-            
-       
+        }
+    }
+    
+    func fetchPastThreeMonthsStepData() {
+        fetchDailySteps(startDate: .threeMonthsAgo) { dailySteps in
+            DispatchQueue.main.async {
+                self.threeMonthsChartData = dailySteps
+            }
+        }
+    }
+   
+    
+    
 }
-

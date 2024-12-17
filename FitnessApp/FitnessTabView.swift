@@ -21,7 +21,7 @@ struct FitnessTabView: View {
                 .environmentObject(manager)
             
             ChartsView()
-                .tag("Home")
+                .tag("Charts")
                 .tabItem {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                 }
