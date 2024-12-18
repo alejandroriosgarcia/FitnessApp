@@ -1,5 +1,7 @@
 GENERAL HEALTH AND FITNESS APP (STRUCTURED FOR MY USE CASES)
 
+**I don't have mock data, so app works best when ran on physical device**
+
 Must have features:
 - Tracking steps (Automatically)
 - Tracking calories burned (Automatically)
